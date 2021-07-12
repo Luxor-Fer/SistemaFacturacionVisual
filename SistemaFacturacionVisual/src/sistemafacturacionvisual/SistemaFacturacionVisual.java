@@ -15,18 +15,7 @@ public class SistemaFacturacionVisual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // fer gh
-        
-        //china holi boli
-        //lksdflskdjflskdjflsdkfj
-       /* sdf
-                sd
-                fsd
-                        fs
-                        df
-              dwdwdqw                  */
-        //kcnlkdfx
-        //poioiii
+    
     }
     
 }

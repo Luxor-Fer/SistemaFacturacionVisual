@@ -5,6 +5,15 @@
  */
 package sistemafacturacionvisual;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+
 /**
  *
  * @author windows
@@ -16,6 +25,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
+        jLblMensajeError.setVisible(false);
+    }
+    public void verificarUsuario(){
+        try {
+            ConeccionBD cn = new ConeccionBD();
+            Connection cc = cn.conectar();
+            String sql = "SELECT CED_USU FROM usuarios "
+                    + "WHERE NICKNAME ='"+jTxtUsuario.getText()+"'"
+                    + "AND CONTRASEÑA = '"+jTxtContraseña.getText()+"'";
+            Statement psd = cc.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            if (rs.first()) {
+                System.out.println("simon prro");
+            }else
+                System.out.println("nel prro");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
     }
 
     /**
@@ -45,6 +74,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel2.setText("Contraseña: ");
 
         jBtnIngresar.setText("INGRESAR");
+        jBtnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnIngresarActionPerformed(evt);
+            }
+        });
 
         jLblMensajeError.setForeground(new java.awt.Color(204, 0, 0));
         jLblMensajeError.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/alertTxt.png"))); // NOI18N
@@ -99,7 +133,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 223, Short.MAX_VALUE)
+            .addGap(0, 136, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -125,6 +159,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBtnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIngresarActionPerformed
+        verificarUsuario();
+    }//GEN-LAST:event_jBtnIngresarActionPerformed
 
     /**
      * @param args the command line arguments

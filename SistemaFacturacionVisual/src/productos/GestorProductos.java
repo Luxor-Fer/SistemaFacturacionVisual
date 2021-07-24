@@ -313,7 +313,7 @@ public class GestorProductos extends javax.swing.JFrame {
                 Logger.getLogger(GestorProductos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+//hola
     }
     
     

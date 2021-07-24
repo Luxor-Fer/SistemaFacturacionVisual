@@ -300,17 +300,16 @@ public class GestorProductos extends javax.swing.JFrame {
                         + "',PRE_PRO='" + precio
                         + "',EST_PRO='" + estado
                         + "',STOCK_PRO='" + stock
-                        + "' where ID_PRO='" + id;
+                        + "' where ID_PRO='" + id+"'";
                 PreparedStatement psd = cn.prepareStatement(sql);
                 int n = psd.executeUpdate();
                 if (n > 0) {
-                    actualizarBD();
                     limpiarTextos();
                     bloqueartextosIniciar();
-                    JOptionPane.showMessageDialog(null, "MODIFICACION");
+                    JOptionPane.showMessageDialog(null, "ELIMINADO");
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(GestorProductos.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
             }
         }
 //hola

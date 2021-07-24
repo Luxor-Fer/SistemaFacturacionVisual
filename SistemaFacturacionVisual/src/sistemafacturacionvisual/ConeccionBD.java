@@ -19,10 +19,10 @@ public class ConeccionBD {
     public Connection conectar() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-             connect = DriverManager.getConnection("jdbc:mysql://localhost/sistema_facturacion_visual","root","");
-             JOptionPane.showInternalMessageDialog(null, "Se conecto a la base de datos");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/sistema_facturacion_visual","root","");
+            //JOptionPane.showMessageDialog(null, "Se conecto correctamente");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "No se conecto a la base de datos");
         }
         return connect;
     }

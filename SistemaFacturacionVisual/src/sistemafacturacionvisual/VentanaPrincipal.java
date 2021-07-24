@@ -5,6 +5,7 @@
  */
 package sistemafacturacionvisual;
 
+import interfazAdmin.ventanaAdmin;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +38,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Statement psd = cc.createStatement();
             ResultSet rs = psd.executeQuery(sql);
             if (rs.first()) {
-                System.out.println("simon prro");
+                ventanaAdmin ventana = new ventanaAdmin();
+                ventana.setVisible(true);
             }else
                 System.out.println("nel prro");
             

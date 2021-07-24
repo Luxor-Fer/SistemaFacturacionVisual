@@ -81,7 +81,6 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jTxtVender" pref="126" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jLabel5" alignment="0" min="-2" pref="107" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
@@ -98,6 +97,7 @@
                               <Component id="jTxtDisponible" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <Component id="jLabel5" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="29" max="32767" attributes="0"/>
                   <Component id="jPanel3" min="-2" max="-2" attributes="0"/>

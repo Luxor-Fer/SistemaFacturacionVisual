@@ -28,6 +28,7 @@ public class GestorClientes extends javax.swing.JInternalFrame {
     /**
      * Creates new form GestorClientes
      */
+    //HOLI
     public GestorClientes() {
         initComponents();
         bloquearbotonesInicio();

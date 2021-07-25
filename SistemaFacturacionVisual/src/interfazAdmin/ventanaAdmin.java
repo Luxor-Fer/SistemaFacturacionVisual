@@ -5,7 +5,7 @@
  */
 package interfazAdmin;
 
-import javax.swing.JInternalFrame;
+import cajero.GestorClientes;
 import javax.swing.JOptionPane;
 import productos.GestorInterno;
 import productos.GestorProductos;
@@ -26,7 +26,20 @@ public class ventanaAdmin extends javax.swing.JFrame {
     public void abrirGestorProductos(){
         //GestorInterno ventana = new GestorInterno();
         try {
-        GestorProductos ventana = new GestorProductos();
+        GestorInterno ventana = new GestorInterno();
+        jDesk.add(ventana);
+        ventana.setVisible(true);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    ////PROBARGESTORCLIENTES
+    public void abrirGestorCliente(){
+        //GestorInterno ventana = new GestorInterno();
+        try {
+        GestorClientes ventana = new GestorClientes();
         jDesk.add(ventana);
         ventana.setVisible(true);
             
@@ -53,20 +66,30 @@ public class ventanaAdmin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jDesk.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jDesk.setForeground(new java.awt.Color(0, 153, 153));
+        jDesk.setName("Administrador"); // NOI18N
+
         javax.swing.GroupLayout jDeskLayout = new javax.swing.GroupLayout(jDesk);
         jDesk.setLayout(jDeskLayout);
         jDeskLayout.setHorizontalGroup(
             jDeskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
+            .addGap(0, 578, Short.MAX_VALUE)
         );
         jDeskLayout.setVerticalGroup(
             jDeskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+            .addGap(0, 475, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Productos");
 
         jMenuItem1.setText("Ingresar");
+        jMenuItem1.setBorder(null);
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Gestionar");
@@ -96,11 +119,16 @@ public class ventanaAdmin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         abrirGestorProductos();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        abrirGestorCliente();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments

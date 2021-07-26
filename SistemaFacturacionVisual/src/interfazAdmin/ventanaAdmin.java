@@ -5,6 +5,7 @@
  */
 package interfazAdmin;
 
+import cajero.FacturaVenta;
 import cajero.GestorClientes;
 import javax.swing.JOptionPane;
 import productos.EliminarStockProductos;
@@ -145,6 +146,11 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenu3.setText("Ventas");
 
         jMenuItem4.setText("Nueva Venta");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem4);
 
         jMenuItem6.setText("jMenuItem6");
@@ -184,6 +190,12 @@ public class ventanaAdmin extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         abrirIngresarProductos ();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        FacturaVenta ventana = new FacturaVenta();
+        jDesk.add(ventana);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments

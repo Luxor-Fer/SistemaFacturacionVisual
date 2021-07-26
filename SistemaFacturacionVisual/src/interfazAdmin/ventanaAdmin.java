@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import productos.EliminarStockProductos;
 import productos.GestorInterno;
 import productos.GestorProductos;
+import productos.IngresarProductos;
 
 /**
  *
@@ -22,6 +23,10 @@ public class ventanaAdmin extends javax.swing.JFrame {
      */
     public ventanaAdmin() {
         initComponents();
+    }
+    public ventanaAdmin( boolean op){
+        initComponents();
+        jMenu1.setVisible(false);
     }
     
     public void abrirEliminarProductos(){
@@ -53,6 +58,11 @@ public class ventanaAdmin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+    public void abrirIngresarProductos (){
+        IngresarProductos ventana = new IngresarProductos();
+        jDesk.add(ventana);
+        ventana.setVisible(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,12 +77,13 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,10 +105,12 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenu1.setText("Productos");
 
         jMenuItem3.setText("Ingresar Productos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
-
-        jMenuItem4.setText("Modificar Productos");
-        jMenu1.add(jMenuItem4);
 
         jMenuItem5.setText("Baja de Productos");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +143,13 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Ventas");
+
+        jMenuItem4.setText("Nueva Venta");
+        jMenu3.add(jMenuItem4);
+
+        jMenuItem6.setText("jMenuItem6");
+        jMenu3.add(jMenuItem6);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -160,6 +180,10 @@ public class ventanaAdmin extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         abrirEliminarProductos();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        abrirIngresarProductos ();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,5 +231,6 @@ public class ventanaAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     // End of variables declaration//GEN-END:variables
 }

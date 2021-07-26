@@ -424,7 +424,7 @@ public class GestorClientes extends javax.swing.JInternalFrame {
         });
 
         jBntCancelar.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jBntCancelar.setText("CANCELAR");
+        jBntCancelar.setText("SALIR");
         jBntCancelar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jBntCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -448,7 +448,7 @@ public class GestorClientes extends javax.swing.JInternalFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
                 .addComponent(jBntNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jBntModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -456,7 +456,7 @@ public class GestorClientes extends javax.swing.JInternalFrame {
                 .addComponent(jBntGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jBntCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGap(42, 42, 42))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));

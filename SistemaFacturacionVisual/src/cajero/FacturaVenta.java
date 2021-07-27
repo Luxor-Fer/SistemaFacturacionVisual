@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import sistemafacturacionvisual.ConeccionBD;
 import sistemafacturacionvisual.VentanaPrincipal;
@@ -29,11 +31,33 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
     /**
      * Creates new form FacturaVenta
      */
+    String id,nombre,precio,cantidad,total;
     DefaultTableModel modelo;
     public FacturaVenta() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        jTxtFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+        controlarDatosFactura();
+        botonesInicio();
+        cargarTabla();
+        
+        jTblProductos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                desbloquearBotonesVender();
+                if (jTblProductos.getSelectedRow() != -1) {
+                    int fila = jTblProductos.getSelectedRow();
+                    id = jTblProductos.getValueAt(fila, 0).toString().trim();
+                    nombre = jTblProductos.getValueAt(fila, 1).toString().trim();
+                    precio = jTblProductos.getValueAt(fila, 2).toString().trim();
+                    cantidad = jTblProductos.getValueAt(fila, 3).toString().trim();
+                    total = jTblProductos.getValueAt(fila, 4).toString().trim();
+                }
+            }
+        });
+    }
+    
+    public void controlarDatosFactura(){
+     jTxtFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
         jTxtFecha.setEnabled(false);
         jLblCheck.setVisible(false);
         jLblError.setVisible(false);
@@ -41,15 +65,47 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jTxtChina.setEnabled(false);
         jTxtCedVend.setText(VentanaPrincipal.cedIngresa);
         jTxtCedVend.setEnabled(false);
-        cargarTabla();
+    }
+    
+    public void limpiarFactura(){
+    jTxtCedula.setText("");
+    jLblCheck.setVisible(false);
+    jLblError.setVisible(false);
+    jTxtCedula.setEnabled(true);
+    botonesInicio();
+    }
+    
+    public void botonesInicio(){
+    jBtnBuscarProducto.setEnabled(false);
+    jBtnEliminar.setEnabled(false);
+    jBtnVender.setEnabled(false);
     }
    
+    public void desbloquearVerificacion(){
+        jTxtCedula.setEnabled(false);
+        jBtnBuscarProducto.setEnabled(true);
+    
+    }
+  
+    public void desbloquearBotonesVender() {
+        if (jTblProductos.getRowCount() == 0) {
+            jBtnEliminar.setEnabled(false);
+            jBtnVender.setEnabled(false);
+        }else{
+         jBtnEliminar.setEnabled(true);
+            jBtnVender.setEnabled(true);
+        }
+    }
+
+    
     public void cargarTabla (){
         String[] titulos = {"ID","NOMBRE","PRECIO","CANTIDAD","TOTAL"};
         modelo = new DefaultTableModel(null, titulos);
         jTblProductos.setModel(modelo);
         String[] registros = new String[5];
+        
     }
+    
     public void controlarIngresoNumeros(KeyEvent e) {
     char caracter = e.getKeyChar();
         if(((caracter<'0' || caracter>'9'))){
@@ -92,6 +148,7 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
             if (rs.first()){
                 jLblError.setVisible(false);
                 jLblCheck.setVisible(true);
+                desbloquearVerificacion();
             }else{
                 jLblCheck.setVisible(false);
                 jLblError.setVisible(true);
@@ -100,6 +157,13 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(FacturaVenta.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    public void eliminarProductoVendido(){
+        
+        
+        
     }
     
     public void agregarProductosVender(String id,String nombre,String cantidad, String precio){
@@ -137,10 +201,10 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jTxtCedula = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jBtnBuscarProducto = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jBtnPepito = new javax.swing.JButton();
+        jBtnVender = new javax.swing.JButton();
+        jBtnLimpiar = new javax.swing.JButton();
+        jBtnEliminar = new javax.swing.JButton();
+        jBtnSalir = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
 
@@ -269,26 +333,31 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setText("VENDER");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jBtnVender.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jBtnVender.setText("VENDER");
+        jBtnVender.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton2.setText("LIMPIAR");
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton2.setPreferredSize(new java.awt.Dimension(85, 29));
-
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton3.setText("ELIMINAR");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jBtnPepito.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jBtnPepito.setText("SALIR");
-        jBtnPepito.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jBtnPepito.setPreferredSize(new java.awt.Dimension(85, 29));
-        jBtnPepito.addActionListener(new java.awt.event.ActionListener() {
+        jBtnLimpiar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jBtnLimpiar.setText("LIMPIAR");
+        jBtnLimpiar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jBtnLimpiar.setPreferredSize(new java.awt.Dimension(85, 29));
+        jBtnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBtnPepitoActionPerformed(evt);
+                jBtnLimpiarActionPerformed(evt);
+            }
+        });
+
+        jBtnEliminar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jBtnEliminar.setText("ELIMINAR");
+        jBtnEliminar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jBtnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jBtnSalir.setText("SALIR");
+        jBtnSalir.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jBtnSalir.setPreferredSize(new java.awt.Dimension(85, 29));
+        jBtnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSalirActionPerformed(evt);
             }
         });
 
@@ -300,10 +369,10 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jBtnBuscarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jBtnPepito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jBtnVender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBtnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBtnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -312,13 +381,13 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jBtnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBtnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBtnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jBtnPepito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -376,17 +445,21 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         controlarIngresoNumeros(evt);
     }//GEN-LAST:event_jTxtCedulaKeyTyped
 
-    private void jBtnPepitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPepitoActionPerformed
+    private void jBtnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalirActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_jBtnPepitoActionPerformed
+    }//GEN-LAST:event_jBtnSalirActionPerformed
+
+    private void jBtnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLimpiarActionPerformed
+      limpiarFactura();
+    }//GEN-LAST:event_jBtnLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnBuscarProducto;
-    private javax.swing.JButton jBtnPepito;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jBtnEliminar;
+    private javax.swing.JButton jBtnLimpiar;
+    private javax.swing.JButton jBtnSalir;
+    private javax.swing.JButton jBtnVender;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

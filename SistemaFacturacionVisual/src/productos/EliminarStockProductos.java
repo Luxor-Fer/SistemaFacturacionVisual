@@ -30,6 +30,7 @@ public class EliminarStockProductos extends javax.swing.JInternalFrame {
      */
     public EliminarStockProductos() {
         initComponents();
+        ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         cargarTablaProductos();
 
         jTblProductos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -81,6 +82,8 @@ public class EliminarStockProductos extends javax.swing.JInternalFrame {
     
     public void actualizarBD() {
                 estado ="NO DISPONIBLE";
+                precio="0";
+                stock="0";
             try {
                 ConeccionBD cc = new ConeccionBD();
                 Connection cn = cc.conectar();
@@ -97,9 +100,7 @@ public class EliminarStockProductos extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, "SE ACTUALIZO CORRECTAMENTE");
                     cargarTablaProductos();
                 }
-                
-                
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(GestorProductos.class.getName()).log(Level.SEVERE, null, ex);
             }

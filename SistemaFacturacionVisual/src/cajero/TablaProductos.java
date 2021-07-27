@@ -48,10 +48,12 @@ public class TablaProductos extends javax.swing.JFrame {
     }
     
     
+    
+    
     public void agregarProductoVender(){
         String cantidad = JOptionPane.showInputDialog("Ingrese la cantidad de prodcutos que desea vender");
         try {
-            if (cantidad.isEmpty() && Integer.parseInt(cantidad)>0){   
+            if (!cantidad.isEmpty() && Integer.parseInt(cantidad)>0){   
             String[] registros = new String[5];
             registros[0] = id;
             registros[1] = nombre;

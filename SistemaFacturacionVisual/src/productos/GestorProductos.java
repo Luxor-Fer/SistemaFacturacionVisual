@@ -36,6 +36,7 @@ public class GestorProductos extends javax.swing.JFrame {
         bloqueartextosIniciar();
         cargarTablaProductos();
         
+        
           jTblProductos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
@@ -669,7 +670,7 @@ public class GestorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTxtNombreKeyTyped
 
     private void jTxtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtPrecioKeyTyped
-        controlarIngresoCostos(evt);
+//        controlarIngresoCostos(evt);
     }//GEN-LAST:event_jTxtPrecioKeyTyped
 
     private void jTxtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtStockKeyTyped
@@ -681,7 +682,7 @@ public class GestorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jBntModificarActionPerformed
 
     private void jBntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBntCancelarActionPerformed
-        this.dispose();
+        
     }//GEN-LAST:event_jBntCancelarActionPerformed
 
     /**

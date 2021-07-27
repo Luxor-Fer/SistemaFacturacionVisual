@@ -86,7 +86,7 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jBtnBuscarProducto.setEnabled(true);
     
     }
-  
+  //holi
     public void desbloquearBotonesVender() {
         if (jTblProductos.getRowCount() == 0) {
             jBtnEliminar.setEnabled(false);

@@ -220,6 +220,7 @@ public class GestorInterno extends javax.swing.JInternalFrame {
     
     public void actualizarBD() {
         estado = jTxtEstado.getText();
+        
         boolean op;
         if(estado.equals("DISPONIBLE"))
             op=true;

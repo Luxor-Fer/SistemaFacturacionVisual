@@ -18,10 +18,7 @@ import javax.swing.JOptionPane;
  * @author windows
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-
-    /**
-     * Creates new form VentanaPrincipal
-     */
+    public static String cedIngresa;
     public VentanaPrincipal() {
         initComponents();
         jLblMensajeError.setVisible(false);
@@ -40,10 +37,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     ventanaAdmin ventana = new ventanaAdmin();
                     ventana.setVisible(true);
                     this.setVisible(false);
+                    cedIngresa = rs.getString("CED_USU");
                 }else{
                     ventanaAdmin ventana = new ventanaAdmin(true);
                     ventana.setVisible(true);
                     this.setVisible(false);
+                    cedIngresa = rs.getString("CED_USU");
                 }
             }else
                 jLblMensajeError.setVisible(true);

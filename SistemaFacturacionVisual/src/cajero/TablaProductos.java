@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +26,9 @@ public class TablaProductos extends javax.swing.JFrame {
      * Creates new form TablaProductos
      */
     DefaultTableModel modelo;
+    DefaultTableModel modelo1;
     String id,nombre,precio,estado,stock;
+    JTable tabla;
     public TablaProductos() {
         initComponents();
         cargarTablaProductos();
@@ -45,10 +48,29 @@ public class TablaProductos extends javax.swing.JFrame {
     }
     
     
-//    public void agregarProductoVender(){
-//    FacturaVenta fv= new FacturaVenta();
-//    fv.agregarProductosVender(id, nombre, stock, precio);
-//    }
+    public void agregarProductoVender(){
+        String cantidad = JOptionPane.showInputDialog("Ingrese la cantidad de prodcutos que desea vender");
+        try {
+            if (cantidad.isEmpty() && Integer.parseInt(cantidad)>0){   
+            String[] registros = new String[5];
+            registros[0] = id;
+            registros[1] = nombre;
+            registros[2] = precio;
+            registros[3] = cantidad; //CANTIDAD DE PRODUCTOS
+            registros[4] = String.valueOf(Float.parseFloat(precio)*Integer.parseInt(cantidad)); // TOTAL PRECIO * PRODUCTO
+            modelo1.addRow(registros);
+            tabla.setModel(modelo1);
+            }else
+                JOptionPane.showMessageDialog(null, "Solo puede ingresar numeros positivos");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese una cantidad valida");
+        }
+    }
+    
+    public void agregarTabla (JTable tab, DefaultTableModel modelo){
+        tabla = tab;
+        modelo1 = modelo;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,7 +197,7 @@ public class TablaProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jBntAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBntAgregarProductoActionPerformed
-//        agregarProductoVender();
+        agregarProductoVender();
     }//GEN-LAST:event_jBntAgregarProductoActionPerformed
 
     /**

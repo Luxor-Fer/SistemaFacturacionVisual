@@ -12,6 +12,8 @@ import productos.EliminarStockProductos;
 import productos.GestorInterno;
 import productos.GestorProductos;
 import productos.IngresarProductos;
+import sistemafacturacionvisual.SistemaFacturacionVisual;
+import sistemafacturacionvisual.VentanaPrincipal;
 
 /**
  *
@@ -85,6 +87,14 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,10 +163,46 @@ public class ventanaAdmin extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem4);
 
-        jMenuItem6.setText("jMenuItem6");
+        jMenuItem6.setText("Ultima Factura");
         jMenu3.add(jMenuItem6);
 
         jMenuBar1.add(jMenu3);
+
+        jMenu5.setText("Reportes");
+
+        jMenuItem9.setText("Facturas");
+        jMenu5.add(jMenuItem9);
+
+        jMenuItem10.setText("Productos Faltantes");
+        jMenu5.add(jMenuItem10);
+
+        jMenuItem11.setText("Mas Vendido Por Semana");
+        jMenu5.add(jMenuItem11);
+
+        jMenuItem12.setText("Historial Mas Vendido");
+        jMenu5.add(jMenuItem12);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu4.setText("Salir");
+
+        jMenuItem7.setText("Cerrar Sesión");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem7);
+
+        jMenuItem8.setText("EXIT");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem8);
+
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -196,6 +242,16 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jDesk.add(ventana);
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        VentanaPrincipal ven = new VentanaPrincipal();
+        ven.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,12 +293,20 @@ public class ventanaAdmin extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }

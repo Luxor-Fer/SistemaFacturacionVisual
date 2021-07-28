@@ -131,22 +131,22 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
     }
     
     public int obtenerNumFact() {
-            try {
-                ConeccionBD cn = new ConeccionBD();
-                Connection cc = cn.conectar();
-                String sql = "SELECT MAX(NUM_FAC) FROM FACTURA";
-                Statement psd = cc.createStatement();
-                ResultSet rs = psd.executeQuery(sql);
-                int val = 0;
-                if (rs.next()) {
-                    val = rs.getInt("MAX(NUM_FAC)");
-                    return val + 1;
-                } else {
-                    return 1;
-                }
-            } catch (SQLException ex) {
-                return 0;
+        try {
+            ConeccionBD cn = new ConeccionBD();
+            Connection cc = cn.conectar();
+            String sql = "SELECT MAX(NUM_FAC) FROM FACTURA";
+            Statement psd = cc.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            int val = 0;
+            if (rs.next()) {
+                val = rs.getInt("MAX(NUM_FAC)");
+                return val + 1;
+            } else {
+                return 1;
             }
+        } catch (SQLException ex) {
+            return 0;
+        }
     }
 
     
@@ -243,19 +243,32 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         }
     }
     
-    public void agregarProductosVender(String id,String nombre,String cantidad, String precio){
-        /*
-    String[] titulos ={"ID","NOMBRE","CANTIDAD","PRECIO U"};
-    modelo = new DefaultTableModel(null, titulos);
-    String[] registro = {id, nombre, cantidad, precio};
-    DefaultTableModel modelo = (DefaultTableModel) jTblProductoVender.getModel();
-    modelo.addRow(registro);
-    jTblProductoVender.setModel(modelo);
-        */
+    public void verificarCantidadStock(){
+        try {
+            ConeccionBD cn = new ConeccionBD();
+            Connection cc = cn.conectar();
+            String sql = "SELECT ID_PRO FROM PRODUCTOS "
+                    + "WHERE EST_PRO = 'DISPONIBLE' "
+                    + "AND STOCK_PRO = 0";
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while ( rs.next() ){
+                cambiarEstdoProducto(rs.getString("ID_PRO"), cc);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
     
-  
-    
+    public void cambiarEstdoProducto (String idPro, Connection cc){
+        try {
+            String sql = "UPDATE PRODUCTOS SET EST_PRO = 'NO DISPONIBLE' WHERE ID_PRO = '"+idPro+"'";
+            PreparedStatement psd = cc.prepareStatement(sql);
+            psd.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -567,6 +580,7 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
 
     private void jBtnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnVenderActionPerformed
         realizarVenta();
+        verificarCantidadStock();
     }//GEN-LAST:event_jBtnVenderActionPerformed
 
 

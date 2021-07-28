@@ -7,11 +7,19 @@ package interfazAdmin;
 
 import cajero.FacturaVenta;
 import cajero.GestorClientes;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperCompileManager;//
+import net.sf.jasperreports.engine.JasperFillManager;//
+import net.sf.jasperreports.engine.JasperPrint;//
+import net.sf.jasperreports.engine.JasperReport;//
+import net.sf.jasperreports.view.JasperViewer;//
 import productos.EliminarStockProductos;
 import productos.GestorInterno;
 import productos.GestorProductos;
 import productos.IngresarProductos;
+import sistemafacturacionvisual.ConeccionBD;
 import sistemafacturacionvisual.SistemaFacturacionVisual;
 import sistemafacturacionvisual.VentanaPrincipal;
 
@@ -66,6 +74,7 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jDesk.add(ventana);
         ventana.setVisible(true);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,6 +101,7 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -182,6 +192,14 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenuItem12.setText("Historial Mas Vendido");
         jMenu5.add(jMenuItem12);
 
+        jMenuItem13.setText("Historial Facturas");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem13);
+
         jMenuBar1.add(jMenu5);
 
         jMenu4.setText("Salir");
@@ -253,6 +271,19 @@ public class ventanaAdmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        try {
+        ConeccionBD cc = new ConeccionBD();
+        //Map ced = new HashMap();
+        JasperReport reporte = JasperCompileManager.compileReport("C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ReporteFacturas.jrxml");
+        JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+        JasperViewer.viewReport(print);
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -300,6 +331,7 @@ public class ventanaAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

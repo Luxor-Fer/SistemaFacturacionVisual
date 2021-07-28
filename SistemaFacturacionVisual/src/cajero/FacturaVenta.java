@@ -130,23 +130,25 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         }
     }
     
-    public int obtenerNumFact (){
-        try {
-            ConeccionBD cn = new ConeccionBD();
-            Connection cc = cn.conectar();
-            String sql = "SELECT NUM_FAC FROM FACTURA";
-            Statement psd = cc.createStatement();
-            ResultSet rs = psd.executeQuery(sql);
-            int val = 0;
-            while (rs.next()) {                
-                val++;
+    public int obtenerNumFact() {
+            try {
+                ConeccionBD cn = new ConeccionBD();
+                Connection cc = cn.conectar();
+                String sql = "SELECT MAX(NUM_FAC) FROM FACTURA";
+                Statement psd = cc.createStatement();
+                ResultSet rs = psd.executeQuery(sql);
+                int val = 0;
+                if (rs.next()) {
+                    val = rs.getInt("MAX(NUM_FAC)");
+                    return val + 1;
+                } else {
+                    return 1;
+                }
+            } catch (SQLException ex) {
+                return 0;
             }
-            return val+1;
-            
-        } catch (SQLException ex) {
-            return 0;
-        }
     }
+
     
     public void verProductos(JTable tabla){
     TablaProductos tp = new TablaProductos();

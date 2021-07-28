@@ -15,9 +15,14 @@ public class SistemaFacturacionVisual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
     VentanaPrincipal ven = new VentanaPrincipal();
     ven.setVisible(true);
     
+
+        
+        
+
     }
     
 }

@@ -7,6 +7,7 @@ package cajero;
 
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -68,11 +70,17 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
     }
     
     public void limpiarFactura(){
+    jLblTotal.setText("0");
     jTxtCedula.setText("");
     jLblCheck.setVisible(false);
     jLblError.setVisible(false);
     jTxtCedula.setEnabled(true);
     botonesInicio();
+    int filas=jTblProductos.getRowCount();
+    for (int i = 0;i<=filas-1; i++) {
+    modelo.removeRow(0);
+    }
+    jTblProductos.setModel(modelo);
     }
     
     public void botonesInicio(){
@@ -86,7 +94,7 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jBtnBuscarProducto.setEnabled(true);
     
     }
-  //holi
+
     public void desbloquearBotonesVender() {
         if (jTblProductos.getRowCount() == 0) {
             jBtnEliminar.setEnabled(false);
@@ -104,6 +112,15 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jTblProductos.setModel(modelo);
         String[] registros = new String[5];
         
+    }
+    
+    public void eliminarProductoSeleccionado(){
+        modelo.removeRow(jTblProductos.getSelectedRow());
+        jTblProductos.setModel(modelo);
+        Float valPro = Float.parseFloat(total);
+        Float valtot = Float.parseFloat(jLblTotal.getText());
+        Float res = valtot - valPro;
+        jLblTotal.setText(String.valueOf(res));
     }
     
     public void controlarIngresoNumeros(KeyEvent e) {
@@ -127,14 +144,13 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
             return val+1;
             
         } catch (SQLException ex) {
-            System.out.println(ex);
             return 0;
         }
     }
     
     public void verProductos(JTable tabla){
     TablaProductos tp = new TablaProductos();
-    tp.agregarTabla(tabla, modelo);
+    tp.agregarTabla(tabla, this, jLblTotal);
     tp.setVisible(true);
     }
     public void validarCedula (){
@@ -158,12 +174,71 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
             Logger.getLogger(FacturaVenta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    public void eliminarProductoVendido(){
-        
-        
-        
+    public boolean metodoActuStock(Integer cant, String id) {
+        try {
+            ConeccionBD cc = new ConeccionBD();
+            Connection cn = cc.conectar();
+            
+            String sqlupdate = "UPDATE PRODUCTOS SET STOCK_PRO =" + cant + " WHERE ID_PRO = '" + id + "'";
+            PreparedStatement psd2 = cn.prepareStatement(sqlupdate);
+            psd2.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+
+    }
+    public Integer metodoSelectStock (String id1){
+        try {
+            int consulta = 0;
+
+            ConeccionBD cc = new ConeccionBD();
+            Connection cn = cc.conectar();
+            
+            String sqlsoporte = "SELECT STOCK_PRO FROM PRODUCTOS WHERE ID_PRO = '"+id1+"'";
+            Statement psd3 = cn.createStatement();
+            ResultSet rs = psd3.executeQuery(sqlsoporte);
+            while(rs.next())
+                consulta = rs.getInt("STOCK_PRO"); 
+            return consulta;
+            
+        } catch (SQLException ex) {
+            System.out.println("error select stock: "+ ex);
+            return 0;
+        }
+    }
+    public void realizarVenta(){
+        try {
+            ConeccionBD cc = new ConeccionBD();
+            Connection cn = cc.conectar();
+            String sqlFac = "INSERT INTO FACTURA VALUES("+Integer.parseInt(jTxtChina.getText())+", '"
+                    + jTxtFecha.getText()+"', '"+jTxtCedVend.getText()+"', '"+jTxtCedula.getText()+"', "+Float.parseFloat(jLblTotal.getText())+")";
+            PreparedStatement psd = cn.prepareStatement(sqlFac);
+            int n = psd.executeUpdate();
+            
+            for (int i = 0; i < jTblProductos.getRowCount(); i++) {
+                String id2 = jTblProductos.getValueAt(i, 0).toString().trim();
+                Integer cant = Integer.parseInt(jTblProductos.getValueAt(i, 3).toString());
+                String sqlDet = "INSERT INTO DETALLE_PRODUCTOS VALUES ('"+id2+"', "+cant+", "+Integer.parseInt(jTxtChina.getText())+")";
+                PreparedStatement psd1 = cn.prepareStatement(sqlDet);
+                int b = psd1.executeUpdate();
+                if(b>0)
+                    System.out.println("holi");
+                
+                Integer nuevoStock = metodoSelectStock(id2);
+                cant = nuevoStock - cant;
+                
+                metodoActuStock(cant, id2);
+
+                }
+            if(n>0){
+                System.out.println("clase: Factura Venta (realizarVenta) implementar reporte factura enviar");
+                limpiarFactura();
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
     
     public void agregarProductosVender(String id,String nombre,String cantidad, String precio){
@@ -187,6 +262,8 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTblProductos = new javax.swing.JTable();
+        jLblTotalText = new javax.swing.JLabel();
+        jLblTotal = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTxtChina = new javax.swing.JTextField();
@@ -220,13 +297,27 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTblProductos);
 
+        jLblTotalText.setBackground(new java.awt.Color(204, 204, 255));
+        jLblTotalText.setText("TOTAL : ");
+        jLblTotalText.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLblTotal.setText("0");
+        jLblTotal.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLblTotalText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -234,7 +325,13 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLblTotalText)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -336,6 +433,11 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jBtnVender.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jBtnVender.setText("VENDER");
         jBtnVender.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jBtnVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnVenderActionPerformed(evt);
+            }
+        });
 
         jBtnLimpiar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jBtnLimpiar.setText("LIMPIAR");
@@ -350,6 +452,11 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jBtnEliminar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jBtnEliminar.setText("ELIMINAR");
         jBtnEliminar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jBtnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnEliminarActionPerformed(evt);
+            }
+        });
 
         jBtnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jBtnSalir.setText("SALIR");
@@ -368,7 +475,7 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jBtnBuscarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                    .addComponent(jBtnBuscarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                     .addComponent(jBtnVender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -395,15 +502,16 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 5, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,18 +520,16 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -453,6 +559,14 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
       limpiarFactura();
     }//GEN-LAST:event_jBtnLimpiarActionPerformed
 
+    private void jBtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarActionPerformed
+        eliminarProductoSeleccionado();
+    }//GEN-LAST:event_jBtnEliminarActionPerformed
+
+    private void jBtnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnVenderActionPerformed
+        realizarVenta();
+    }//GEN-LAST:event_jBtnVenderActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnBuscarProducto;
@@ -467,6 +581,8 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLblCheck;
     private javax.swing.JLabel jLblError;
+    private javax.swing.JLabel jLblTotal;
+    private javax.swing.JLabel jLblTotalText;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

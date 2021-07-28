@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -29,6 +30,8 @@ public class TablaProductos extends javax.swing.JFrame {
     DefaultTableModel modelo1;
     String id,nombre,precio,estado,stock;
     JTable tabla;
+    JLabel total;
+    FacturaVenta objeto;
     public TablaProductos() {
         initComponents();
         cargarTablaProductos();
@@ -52,26 +55,32 @@ public class TablaProductos extends javax.swing.JFrame {
     
     public void agregarProductoVender(){
         String cantidad = JOptionPane.showInputDialog("Ingrese la cantidad de prodcutos que desea vender");
+        Integer cantProd = Integer.parseInt(stock);
         try {
-            if (!cantidad.isEmpty() && Integer.parseInt(cantidad)>0){   
+            if (!cantidad.isEmpty() && Integer.parseInt(cantidad)>0 && Integer.parseInt(cantidad)<= cantProd){   
             String[] registros = new String[5];
             registros[0] = id;
             registros[1] = nombre;
             registros[2] = precio;
             registros[3] = cantidad; //CANTIDAD DE PRODUCTOS
             registros[4] = String.valueOf(Float.parseFloat(precio)*Integer.parseInt(cantidad)); // TOTAL PRECIO * PRODUCTO
+            Float totalFact = Float.parseFloat(total.getText());
+            total.setText(String.valueOf(totalFact+Float.parseFloat(precio)*Integer.parseInt(cantidad)));
             modelo1.addRow(registros);
             tabla.setModel(modelo1);
+            objeto.desbloquearBotonesVender();
             }else
-                JOptionPane.showMessageDialog(null, "Solo puede ingresar numeros positivos");
+                JOptionPane.showMessageDialog(null, "Ingrese Cantidad Valida");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Ingrese una cantidad valida");
         }
     }
     
-    public void agregarTabla (JTable tab, DefaultTableModel modelo){
+    public void agregarTabla (JTable tab, FacturaVenta obj, JLabel tot){
         tabla = tab;
-        modelo1 = modelo;
+        modelo1 = obj.modelo;
+        objeto = obj;
+        total = tot;
     }
 
     /**
@@ -112,7 +121,7 @@ public class TablaProductos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTblProductos);
 
-        jButton1.setText("CANCELAR");
+        jButton1.setText("CERRAR");
         jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

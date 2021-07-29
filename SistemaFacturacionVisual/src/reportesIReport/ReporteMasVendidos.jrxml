@@ -9,40 +9,39 @@
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT
-     factura.`NUM_FAC` AS factura_NUM_FAC,
-     factura.`FEC_FAC` AS factura_FEC_FAC,
-     factura.`CED_VEN_FAC` AS factura_CED_VEN_FAC,
-     factura.`CED_CLI_FAC` AS factura_CED_CLI_FAC,
-     factura.`TOTAL` AS factura_TOTAL,
-     detalle_productos.`ID_PRO_VEN` AS detalle_productos_ID_PRO_VEN,
-     detalle_productos.`CANTIDAD` AS detalle_productos_CANTIDAD,
-     detalle_productos.`NUM_FAC_VEN` AS detalle_productos_NUM_FAC_VEN
+     P.`ID_PRO` AS CODIGO,
+     P.`NOM_PRO` AS NOMBRE,
+     P.`PRE_PRO` AS PRECIO,
+     SUM(DP.`CANTIDAD`) AS TOTAL_VENDIDOS
 FROM
-     `factura` factura INNER JOIN `detalle_productos` detalle_productos ON factura.`NUM_FAC` = detalle_productos.`NUM_FAC_VEN`]]>
+     productos P, detalle_productos DP
+WHERE P.ID_PRO = DP.ID_PRO_VEN 
+GROUP BY  P.`ID_PRO`
+ORDER BY SUM(DP.`CANTIDAD`) DESC]]>
 	</queryString>
-	<field name="factura_NUM_FAC" class="java.lang.Integer"/>
-	<field name="factura_FEC_FAC" class="java.lang.String"/>
-	<field name="factura_CED_VEN_FAC" class="java.lang.String"/>
-	<field name="factura_CED_CLI_FAC" class="java.lang.String"/>
-	<field name="factura_TOTAL" class="java.lang.Float"/>
-	<field name="detalle_productos_ID_PRO_VEN" class="java.lang.String"/>
-	<field name="detalle_productos_CANTIDAD" class="java.lang.Integer"/>
-	<field name="detalle_productos_NUM_FAC_VEN" class="java.lang.Integer"/>
+	<field name="CODIGO" class="java.lang.String"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="PRECIO" class="java.lang.Float"/>
+	<field name="TOTAL_VENDIDOS" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="70" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="0" y="13" width="263" height="33"/>
+				<reportElement style="Title" x="0" y="13" width="339" height="33"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Historial de Facturas]]></text>
+				<text><![CDATA[REPORTE MAS VENDIDOS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="SubTitle" x="100" y="46" width="174" height="22"/>
 				<textElement/>
-				<text><![CDATA[HISTORIAL]]></text>
+				<text><![CDATA[GENERAL]]></text>
 			</staticText>
+			<image>
+				<reportElement x="433" y="-2" width="220" height="70"/>
+				<imageExpression><![CDATA["C:\\Users\\windows\\Documents\\netBeans8.2\\SistemaFacturacionVisual\\SistemaFacturacionVisual\\SistemaFacturacionVisual\\src\\img\\jf1.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -57,29 +56,24 @@ FROM
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement style="Column header" x="0" y="19" width="69" height="15"/>
+				<reportElement style="Column header" x="0" y="19" width="138" height="15"/>
 				<textElement/>
-				<text><![CDATA[NumFactura]]></text>
+				<text><![CDATA[CODIGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="78" y="19" width="69" height="15"/>
+				<reportElement style="Column header" x="138" y="19" width="138" height="15"/>
 				<textElement/>
-				<text><![CDATA[Fecha]]></text>
+				<text><![CDATA[NOMBRE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="158" y="19" width="90" height="15"/>
+				<reportElement style="Column header" x="276" y="19" width="138" height="15"/>
 				<textElement/>
-				<text><![CDATA[CI VENDEDOR]]></text>
+				<text><![CDATA[PRECIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="259" y="20" width="69" height="15"/>
+				<reportElement style="Column header" x="414" y="19" width="138" height="15"/>
 				<textElement/>
-				<text><![CDATA[CI Cliente]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" x="349" y="19" width="69" height="15"/>
-				<textElement/>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[TOTAL_VENDIDOS]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -92,29 +86,24 @@ FROM
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement style="Detail" x="0" y="0" width="69" height="15"/>
+				<reportElement style="Detail" x="0" y="0" width="138" height="15"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{factura_NUM_FAC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CODIGO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="78" y="0" width="69" height="15"/>
+				<reportElement style="Detail" x="138" y="0" width="138" height="15"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{factura_FEC_FAC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="158" y="1" width="90" height="15"/>
+				<reportElement style="Detail" x="276" y="0" width="138" height="15"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{factura_CED_VEN_FAC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PRECIO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="260" y="0" width="69" height="15"/>
+				<reportElement style="Detail" x="414" y="0" width="138" height="15"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{factura_CED_CLI_FAC}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement style="Detail" x="349" y="1" width="69" height="15"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{factura_TOTAL}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TOTAL_VENDIDOS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

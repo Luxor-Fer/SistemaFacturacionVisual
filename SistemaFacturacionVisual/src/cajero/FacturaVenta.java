@@ -59,7 +59,7 @@ public class FacturaVenta extends javax.swing.JInternalFrame {
     }
     
     public void controlarDatosFactura(){
-     jTxtFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+        jTxtFecha.setText(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
         jTxtFecha.setEnabled(false);
         jLblCheck.setVisible(false);
         jLblError.setVisible(false);

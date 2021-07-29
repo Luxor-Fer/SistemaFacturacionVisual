@@ -184,12 +184,27 @@ public class ventanaAdmin extends javax.swing.JFrame {
         jMenu5.add(jMenuItem9);
 
         jMenuItem10.setText("Productos Faltantes");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem10);
 
         jMenuItem11.setText("Mas Vendido Por Semana");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem11);
 
         jMenuItem12.setText("Historial Mas Vendido");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem12);
 
         jMenuItem13.setText("Historial Facturas");
@@ -275,14 +290,54 @@ public class ventanaAdmin extends javax.swing.JFrame {
         try {
         ConeccionBD cc = new ConeccionBD();
         //Map ced = new HashMap();
-        JasperReport reporte = JasperCompileManager.compileReport("C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ReporteFacturas.jrxml");
+        JasperReport reporte = JasperCompileManager.compileReport("C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/HistorialReSportes.jrxml");
         JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
-        JasperViewer.viewReport(print);
+        JasperViewer.viewReport(print, false);
             
         } catch (Exception e) {
             System.out.println(e);
         }
     }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        try {
+        ConeccionBD cc = new ConeccionBD();
+        //Map ced = new HashMap();
+        JasperReport reporte = JasperCompileManager.compileReport("C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ProductosNoDisponibles.jrxml");
+        JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+        JasperViewer.viewReport(print, false);
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        try {
+        ConeccionBD cc = new ConeccionBD();
+        //Map ced = new HashMap();
+        JasperReport reporte = JasperCompileManager.compileReport("C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ReporteMasVendidos.jrxml");
+        JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+        JasperViewer.viewReport(print, false);
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        try {
+        ConeccionBD cc = new ConeccionBD();
+        //Map ced = new HashMap();
+        JasperReport reporte = JasperCompileManager.compileReport("C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ReporteMasVendidosSemana.jrxml");
+        JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+        JasperViewer.viewReport(print, false);
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }        
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments

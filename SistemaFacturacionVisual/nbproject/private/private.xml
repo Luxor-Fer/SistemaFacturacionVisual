@@ -5,9 +5,15 @@
         <group>
             <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/sistemafacturacionvisual/ConeccionBD.java</file>
             <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/cajero/FacturaVenta.java</file>
+            <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ReporteMasVendidos.jrxml</file>
             <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/interfazAdmin/ventanaAdmin.java</file>
+            <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ProductosNoDisponibles.jrxml</file>
             <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/cajero/TablaProductos.java</file>
+            <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/productos/GestorProductos.java</file>
             <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/sistemafacturacionvisual/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/ReporteMasVendidosSemana.jrxml</file>
+            <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/reportesIReport/HistorialResportes.jrxml</file>
+            <file>file:/C:/Users/windows/Documents/netBeans8.2/SistemaFacturacionVisual/SistemaFacturacionVisual/SistemaFacturacionVisual/src/sistemafacturacionvisual/SistemaFacturacionVisual.java</file>
         </group>
     </open-files>
 </project-private>
